@@ -6,12 +6,13 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -90,16 +91,59 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_1);
+  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_2);
+  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_3);
+  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_4);
+
   while (1)
   {
-	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_1);
-	  HAL_Delay(500);
-	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_2);
-	  HAL_Delay(500);
-	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_3);
-	  HAL_Delay(500);
-	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
-	  HAL_Delay(500);
+	  if ((HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_6) == GPIO_PIN_SET))
+	  {
+		  if (HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET)
+		  {
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_1);
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_2);
+		  } else if (HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_2) == GPIO_PIN_RESET)
+		  {
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_2);
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_3);
+		  } else if (HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_3) == GPIO_PIN_RESET)
+		  {
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_3);
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_4);
+		  } else if (HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_4) == GPIO_PIN_RESET)
+		  {
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_4);
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_1);
+		  } else
+		  {
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_1);
+		  }
+		  HAL_Delay (300);
+	  } else if (HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_7) == GPIO_PIN_SET)
+	  {
+		  if (HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_1) == GPIO_PIN_SET)
+		  {
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_1);
+		  } else if (HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_2) == GPIO_PIN_SET)
+		  {
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_2);
+		  } else if (HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_3) == GPIO_PIN_SET)
+		  {
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_3);
+		  } else if (HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_4) == GPIO_PIN_SET)
+		  {
+			  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_4);
+		  } else
+		  {
+			  HAL_GPIO_WritePin (GPIOA, GPIO_PIN_1, GPIO_PIN_SET);
+			  HAL_GPIO_WritePin (GPIOA, GPIO_PIN_2, GPIO_PIN_SET);
+			  HAL_GPIO_WritePin (GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
+			  HAL_GPIO_WritePin (GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+		  }
+		  HAL_Delay (300);
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

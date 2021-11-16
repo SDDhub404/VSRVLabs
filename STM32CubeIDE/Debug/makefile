@@ -34,37 +34,38 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := Lab01_STM32F103C6
+BUILD_ARTIFACT_NAME := Lab02_STM32F103C6
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-Lab01_STM32F103C6.elf \
+Lab02_STM32F103C6.elf \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-Lab01_STM32F103C6.list \
+Lab02_STM32F103C6.list \
 
 OBJCOPY_HEX += \
-Lab01_STM32F103C6.hex \
+Lab02_STM32F103C6.hex \
 
 OBJCOPY_BIN += \
-Lab01_STM32F103C6.bin \
+Lab02_STM32F103C6.bin \
 
 
 # All Target
-all: main-build
+all:
+	+@$(MAKE) --no-print-directory main-build && $(MAKE) --no-print-directory post-build
 
 # Main-build Target
-main-build: Lab01_STM32F103C6.elf secondary-outputs
+main-build: Lab02_STM32F103C6.elf secondary-outputs
 
 # Tool invocations
-Lab01_STM32F103C6.elf: $(OBJS) $(USER_OBJS) D:\Users\Admin\STM32CubeIDE\workspace_1.8.0\Lab01_STM32F103C6\STM32F103C6TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Lab01_STM32F103C6.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\Users\Admin\STM32CubeIDE\workspace_1.8.0\Lab01_STM32F103C6\STM32F103C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab01_STM32F103C6.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Lab02_STM32F103C6.elf: $(OBJS) $(USER_OBJS) D:\Users\Admin\STM32CubeIDE\workspace_1.8.0\Lab02_Test_STM32F103C6\STM32F103C6TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Lab02_STM32F103C6.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\Users\Admin\STM32CubeIDE\workspace_1.8.0\Lab02_Test_STM32F103C6\STM32F103C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab02_STM32F103C6.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -73,24 +74,28 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Lab01_STM32F103C6.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Lab01_STM32F103C6.list"
+Lab02_STM32F103C6.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Lab02_STM32F103C6.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Lab01_STM32F103C6.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "Lab01_STM32F103C6.hex"
+Lab02_STM32F103C6.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "Lab02_STM32F103C6.hex"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Lab01_STM32F103C6.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "Lab01_STM32F103C6.bin"
+Lab02_STM32F103C6.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "Lab02_STM32F103C6.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) Lab01_STM32F103C6.bin Lab01_STM32F103C6.elf Lab01_STM32F103C6.hex Lab01_STM32F103C6.list default.size.stdout
+	-$(RM) Lab02_STM32F103C6.bin Lab02_STM32F103C6.elf Lab02_STM32F103C6.hex Lab02_STM32F103C6.list default.size.stdout
+	-@echo ' '
+
+post-build:
+	arm-none-eabi-objcopy -O ihex Lab02_STM32F103C6.elf Lab02_STM32F103C6.hex
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
@@ -102,6 +107,6 @@ fail-specified-linker-script-missing:
 warn-no-linker-script-specified:
 	@echo 'Warning: No linker script specified. Check the linker settings in the build configuration.'
 
-.PHONY: all clean dependents main-build fail-specified-linker-script-missing warn-no-linker-script-specified
+.PHONY: all clean dependents main-build fail-specified-linker-script-missing warn-no-linker-script-specified post-build
 
 -include ../makefile.targets
